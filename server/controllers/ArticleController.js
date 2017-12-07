@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/users');
 const Check = require('../init/nosql/check');
+const Edit = require('../init/nosql/edit');
 const Create = require('../init/nosql/create');
 const Get = require('../init/nosql/get');
 class ArticleController{
@@ -29,10 +30,33 @@ class ArticleController{
       }
     }
   }
+  //编辑文章
+  static async editArticle(ctx){
+    let articleId = ctx.request.body.articleId;
+    let title = ctx.request.body.title;
+    let content = ctx.request.body.content;
+    let editResult = await Edit.editArticle(articleId,title,content);
+    if(editResult){
+      ctx.body = {
+        status:'0',
+        msg:'success',
+        result:''
+      }
+    }
+    else {
+      ctx.body = {
+        status:'1',
+        msg:'fail',
+        result:''
+      }
+    }
+  }
   //获取文章列表
   static async getArticleList(ctx){
-    let email = ctx.session.email;
-    let articleListResult = await Get.getArticleList(email);
+    let userId = ctx.query.userId;
+    let userInfo = await Get.getUserInfo(userId);
+    let userEmail = userInfo.email;
+    let articleListResult = await Get.getArticleList(userEmail);
     if(articleListResult){
       ctx.body = {
         status:'0',

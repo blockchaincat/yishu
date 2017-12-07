@@ -3,7 +3,9 @@
     <li v-for="article in articleList" class="note-item">
       <div class="content">
         <div class="author">
-          <a href="" class="avatar" target="_blank"></a>
+          <a href="" class="avatar" target="_blank">
+            <img :src="'/avatar/'+avatarName" alt="">
+          </a>
           <div class="info">
             <a href="" target="_blank" class="nickname">{{authorInfo.username}}</a>
             <time>{{article.create_time|timeFormat}}</time>
@@ -30,12 +32,16 @@
     data(){
       return {
         articleList:[],
-        authorInfo:{}
+        authorInfo:{},
+        avatarName:''
       }
     },
       methods:{
         getArticleList(){
-          axios.get('/article/getArticleList').then(response=>{
+          let userId = this.$route.params.userId;
+          axios.get('/article/getArticleList',{
+            params:{userId:userId}
+          }).then(response=>{
             let res = response.data;
             if(res.status==='0'){
               this.articleList = res.result.reverse()
@@ -50,6 +56,7 @@
             let res = response.data;
             if(res.status==='0'){
               this.authorInfo = res.result;
+              this.avatarName = res.result.avatar;
             }
           });
         },
@@ -94,13 +101,15 @@
             padding-left 3px
             color #969696
             vertical-align middle
-
       .title
         margin -7px 0 4px
         display inherit
         font-size 18px
         font-weight 700
         line-height 1.5
+        transition-duration 0.2s
+        &:hover
+          text-decoration underline
         &:visited
           color #969696
       .abstract
@@ -131,5 +140,4 @@
           transition 0.1s ease-in
           &:hover
             color #333
-
 </style>

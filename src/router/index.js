@@ -14,6 +14,8 @@ import BookMarks from '../views/bookmarks.vue'
 import Settings from '../views/settings.vue'
 import Profile from '../components/profile.vue'
 import Basic from '../components/basic.vue'
+import Edit from '../views/edit'
+import NotFound from '../components/404'
 Vue.use(Router);
 
 export default new Router({
@@ -75,6 +77,12 @@ export default new Router({
       name:'Article',
       component:Article
     },
+    //文章编辑页
+    {
+      path:'/edit/:articleId',
+      name:'Edit',
+      component:Edit
+    },
     //注册页面
     {
       path:'/register',
@@ -102,6 +110,15 @@ export default new Router({
           component:Basic
         }
       ]
+    },
+  //  404页面
+    {
+      path:'*',
+      name:'NotFound',
+      meta:{
+        title:'您要找的页面不存在 - 简书'
+      },
+      component:NotFound
     }
   ]
 })

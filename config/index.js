@@ -43,6 +43,9 @@ module.exports = {
       },
       '/setting/*':{
         target:'http://localhost:3000'
+      },
+      '/avatar/*':{
+        target:'http://localhost:3000'
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"

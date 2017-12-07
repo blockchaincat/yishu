@@ -4,7 +4,7 @@
     <div class="container bookmarks" id="js-page-top">
       <div class="row">
         <div class="col-xs-18 col-xs-offset-3 main">
-          <img class="tag-banner" src="//cdn2.jianshu.io/assets/web/collect-note-955d8c71641a360924390da9da4b0151.png" alt="Collect note">
+          <img class="tag-banner" src="/static/collect-note.png" alt="Collect note">
           <article-list :authorList="authorList" :articleList="collectedArticleList"></article-list>
         </div>
       </div>

@@ -3,9 +3,12 @@
       <div class="row">
         <main>
           <div class="main-top">
-            <a href="" class="avatar"></a>
+            <a href="" class="avatar">
+              <img :src="'/avatar/'+avatarName" alt="avatar">
+            </a>
             <div class="title">
               <a href="" class="name">{{authorInfo.username}}</a>
+              <i class="fa" :class="{'fa-mars':authorInfo.sex===0,'fa-venus':authorInfo.sex===1}"></i>
             </div>
             <div class="info">
               <ul>
@@ -94,11 +97,9 @@
           authorInfo:{},
           followsNum:'',
           fansNum:'',
-          articleList:[]
+          articleList:[],
+          avatarName:''
         }
-      },
-      computed:{
-
       },
       methods:{
         user_intro_edit(){
@@ -126,11 +127,19 @@
               this.description = res.result.description
               this.followsNum = res.result.follows.length
               this.fansNum = res.result.fans.length
+              this.avatarName = res.result.avatar
+
             }
-          });
+          }).catch(response=>{
+            if(response instanceof Error){
+              this.$router.push({name:'NotFound',path:'/sdsds'})
+            }
+          })
         },
         getArticleList(){
+          let userId = this.$route.params.userId;
           axios.get('/article/getArticleList',{
+            params:{'userId':userId}
           }).then(response=>{
             let res = response.data;
             if(res.status==='0'){
@@ -185,8 +194,6 @@
             width 80px
             height 80px
             margin-left -2px
-            border-radius 50%
-            background rgb(219, 84, 98)
           .title
             padding 5px 0 0 100px
             .name
@@ -194,6 +201,13 @@
               font-size 21px
               font-weight 700
               vertical-align middle
+            i
+              font-size 17px
+              vertical-align middle
+            .fa-mars
+              color #3194d0
+            .fa-venus
+              color #ea6f5a
           .info
             margin-top 4px
             padding-left 100px

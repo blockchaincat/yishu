@@ -14,7 +14,7 @@
               </router-link>
             </li>
             <li>
-              <router-link to="/settings/basic">
+              <router-link to="/settings/profile">
                 <div class="setting-icon">
                   <i class="fa fa-id-card"></i>
                 </div>
@@ -40,7 +40,7 @@
           </ul>
         </aside>
         <div class="col-xs-16 col-xs-offset-8 main">
-          <router-view :userInfo="userInfo"></router-view>
+          <router-view :userInfo="userInfo" :avatarName="avatarName"></router-view>
         </div>
       </div>
     </div>
@@ -52,7 +52,8 @@
     export default {
       data(){
         return {
-          userInfo:{}
+          userInfo:{},
+          avatarName:''
         }
       },
       components:{
@@ -67,6 +68,7 @@
             let res = response.data;
             if(res.status==='0'){
               this.userInfo = res.result;
+              this.avatarName = res.result.avatar
             }
           });
         },
@@ -117,6 +119,9 @@
               vertical-align middle
       .main
         padding-left 0
+        .avatar
+          width 100px
+          height 100px
         .col-xs-5,.col-xs-6,.col-xs-8,.col-xs-11,.col-xs-16,.col-xs-18
           padding 0
         .setting-save

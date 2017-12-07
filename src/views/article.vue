@@ -7,7 +7,9 @@
           <h1 class="title">{{articleContent.title}}</h1>
           <!--作者区域-->
           <div class="author">
-            <a href="" class="avatar"></a>
+            <a href="" class="avatar">
+              <img :src="'/avatar/'+avatarName" alt="">
+            </a>
             <div class="info">
               <span class="name">
                 <a href="">{{authorInfo.username}}</a>
@@ -21,6 +23,8 @@
               </div>
 
             </div>
+            <!--如果是当前作者，加入编辑按钮-->
+            <router-link  v-if="authorInfo._id===this.$store.state.userId" :to="{name:'Edit',params:{articleId:articleContent._id}}" class="edit">编辑文章</router-link>
           </div>
           <!--文章内容-->
           <div class="show-content ql-editor" v-html="articleContent.content">
@@ -28,7 +32,9 @@
           <!--文章底部作者信息-->
           <div class="follow-detail">
             <div class="info">
-              <a href="" class="avatar"></a>
+              <a href="" class="avatar">
+                <img :src="'/avatar/'+avatarName" alt="">
+              </a>
               <a @click="togglefollow" v-show="!oneself" href="javascript:;" class="btn btn-success follow" :class="{'btn-success':!isFollowed,'follow':!isFollowed,'following':isFollowed,'btn-default':isFollowed}">
                 <i class="fa" :class="{'fa-plus':!isFollowed,'fa-check':isFollowed}"></i>
                 <span>{{isFollowed?'已关注':'关注'}}</span></a>
@@ -79,7 +85,8 @@
         collected:[],
         fansNum:'',
         comments:[],
-        commentUser:{}
+        commentUser:{},
+        avatarName:'',
       }
     },
     methods: {
@@ -118,6 +125,7 @@
           let userId = this.$store.state.userId;
           let articleId = this.articleContent._id;
           if (res.status === '0') {
+            this.avatarName = res.result.avatar
             this.authorInfo = res.result;
             this.fansNum = res.result.fans.length;
             if(this.authorInfo.fans.indexOf(userId)>=0){
@@ -186,8 +194,6 @@
             height 48px
             vertical-align middle
             display inline-block
-            border-radius 50%
-            background #db5462
           .info
             vertical-align middle
             display inline-block
@@ -196,6 +202,15 @@
               margin-right 3px
               font-size 16px
               vertical-align middle
+          .edit
+            float right
+            margin-top 8px
+            padding 0 12px
+            font-size 14px
+            border 1px solid #dcdcdc
+            color #9b9b9b
+            line-height 30px
+            border-radius 50px
           .meta
             margin-top 5px
             font-size 12px

@@ -1,8 +1,9 @@
 <template>
-  <div>
     <div id="comment-list">
       <form class="new-comment">
-        <a href="" class="avatar"></a>
+        <a href="" class="avatar">
+          <img :src="'/avatar/'+avatarName" alt="avatar">
+        </a>
         <textarea v-model="post_comment_content" @focus="sendBtnDisplay" placeholder="写下你的评论"></textarea>
         <transition name="fade">
           <div v-show="sendBtn" class="write-function-block">
@@ -24,7 +25,9 @@
         <div v-for="(comment,index) in comments" class="comment">
           <div>
             <div class="author">
-              <a href="" target="_blank" class="avatar"></a>
+              <a href="" target="_blank" class="avatar">
+                <img :src="'/avatar/'+commentUser[index].avatar" alt="avatar">
+              </a>
               <div class="info">
                 <a href="" target="_blank" class="name">{{commentUser[index].username}}</a>
                 <div class="meta">
@@ -45,7 +48,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 <script>
   import axios from 'axios'
@@ -55,7 +57,8 @@
           sendBtn:false,
           post_comment_content:'',
          comments:[],
-         commentUser:{}
+         commentUser:{},
+          avatarName:localStorage.avatarName
         };
       },
       methods:{
@@ -101,7 +104,7 @@
           }).then(response=>{
             let res = response.data;
             if(res.status==='0'){
-              this.$emit('getComments')
+              this.getComments()
             }
           });
         }
@@ -141,9 +144,8 @@
         height: 38px
         vertical-align: middle
         display: inline-block
-        border: 1px solid #ddd;
-        border-radius: 50%;
-        background #db5462
+        position absolute
+        left -48px
       textarea
         padding: 10px 15px
         width: 100%

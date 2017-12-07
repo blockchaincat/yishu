@@ -12,7 +12,7 @@
               查看全部
             </a>
             <div class="container-fluid list">
-
+              <div class="col-xs-8"></div>
             </div>
           </div>
           <div class="relevant"></div>
@@ -34,6 +34,16 @@
       components:{
         NavHeader,
         ArticleList
+      },
+      data(){
+        return {
+          articleList:[]
+        }
+      },
+      methods:{
+        getSearchArticle(){
+          axios.get('/search/getSearchArticle')
+        }
       }
     }
 </script>

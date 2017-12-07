@@ -2,7 +2,7 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="width-limit">
       <!--左上方logo-->
-      <a href="" class="logo">
+      <a href="/" class="logo">
         <img src="../assets/image/logo.png" alt="">
       </a>
       <!--右上角-->
@@ -12,8 +12,9 @@
         写文章</router-link>
       <div class="user" v-if="nickname">
         <div class="dropdown">
-          <router-link @click="userIndex" :to="{name:'ArticleList',params:{userId:userId}}" class="username">
-            {{nickname}} <i class="fa fa-sort-down"></i>
+
+          <router-link @click="userIndex" :to="{name:'ArticleList',params:{userId:userId}}" class="username avatar">
+            <img :src="/avatar/+avatarName" alt=""> <i class="fa fa-sort-down"></i>
           </router-link>
         </div>
         <ul class="dropdown-menu">
@@ -69,6 +70,18 @@
       </div>-->
       <router-link v-if="!nickname" to="/register" class="btn sign-up">注册</router-link>
       <router-link v-if="!nickname" to="/login" class="btn log-in">登录</router-link>
+      <div class="container">
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="nav nav-bar-nav">
+            <li class="tab active">
+              <a href="/">
+                <span class="menu-text">首页</span>
+                <i class="fa fa-compass"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
@@ -77,7 +90,8 @@
     export default {
       data(){
         return {
-          itemShow:false
+          itemShow:false,
+          avatarName:localStorage.avatarName
         }
       },
       computed:{
@@ -103,6 +117,7 @@
               this.$store.commit('updateUserFans',res.result.fans);
               this.$store.commit('updateIsNightMode',res.result.isNightMode);
               localStorage.userId = res.result.userId
+              localStorage.setItem('avatarName',res.result.avatarName)
             }
           })
         },
@@ -193,26 +208,25 @@
           font-size 19px
           vertical-align middle
       .user
+        position relative
         float right
         height 56px
-        position relative
         &:hover
           background rgb(244, 244, 244)
         &:hover .dropdown-menu
           display inline-block
         .dropdown
-          .username
-            display block
-            text-align center
-            position relative
-            text-overflow ellipsis
-            white-space nowrap
-            overflow hidden
-            width 85px
-            height 56px
-            margin: 21px 28px 8px 20px
+          margin-top 9px
+          .avatar
+            width 40px
+            height 40px
+            margin 8px 28px 8px 20px
+            img
+              width 40px!important
+              height 40px!important
             .fa
               transform: translateY(-2px)
+              color #999
         .dropdown-menu
           position absolute
           left 0

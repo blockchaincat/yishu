@@ -5,6 +5,9 @@ const Create = require('../init/nosql/create');
 const Get = require('../init/nosql/get');
 const Edit = require('../init/nosql/edit');
 const Captcha = require('../util/captcha');
+const os = require('os');
+const copyAvatar = require('../util/copyAvatar');
+const path = require('path');
 class UserController{
   //登录
   static async  login(ctx){
@@ -22,6 +25,7 @@ class UserController{
       session.username = userResult.username;
       session.userId = userResult.id;
       session.email = userResult.email;
+      session.avatarName = userResult.avatar;
     }else {
       ctx.body = {
         status:'1',
@@ -54,11 +58,22 @@ class UserController{
   static async getUserInfo(ctx){
     let userId = ctx.request.query.userId;
     let userResult = await Check.selectUser(userId);
-    ctx.body = {
-      status:'0',
-      msg:'success',
-      result:userResult
+    if(userResult){
+      ctx.body = {
+        status:'0',
+        msg:'success',
+        result:userResult
+      }
     }
+    else {
+      ctx.status=404;
+      ctx.body = {
+        status:'1',
+        msg:'fail',
+        result:userResult
+      }
+    }
+
   }
   //注册
   static async register(ctx){
@@ -274,6 +289,27 @@ class UserController{
     }
 
   }
+//  上传头像
+  static async uploadAvatar(ctx){
+    let userId = ctx.session.userId;
+    let filePath = ctx.request.body.files.avatar.path;
+    let avatarPath = path.resolve('./uploads/avatar/'+userId+'.png');
+    const files = ctx.request.body.files || {};
+    //读取保存在临时目录中的头像
+    let copyAvatarResult = await copyAvatar(filePath,avatarPath,userId)
+    if(copyAvatarResult){
+      ctx.body = {
+        status:'0',
+        msg:'success'
+      }
+    }
+    else {
+      ctx.body = {
+        status:'1',
+        msg:'fail'
+      }
+    }
+  }
 }
-UserController.str = ''
+UserController.str = '';
 module.exports= UserController;

@@ -1,13 +1,14 @@
 const path = require('path');
 const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
+const bodyParser = require('koa-body');
 const routers = require('./routers/index');
 const convert = require('koa-convert');
 const koaLogger = require('koa-logger');
 const session = require('koa-session-minimal');
 const MysqlStore = require('koa-mysql-session');
 const flashSimple = require('koa-flash-simple');
-
+const koaStatic =require('koa-static');
+const multer = require('koa-multer');
 const app = new Koa();
 //sesstion存储配置
 const sessionMysqlConfig = {
@@ -31,8 +32,9 @@ app.use(session({
 app.use(convert(koaLogger()));
 
 // 配置ctx.body解析中间件
-app.use(bodyParser());
-
+app.use(bodyParser({multipart:true}));
+//配置静态资源加载中间件
+app.use(koaStatic(path.join(__dirname,'./uploads')));
 // 初始化路由中间件
 app.use(routers.routes()).use(routers.allowedMethods());
 app.listen(3000);

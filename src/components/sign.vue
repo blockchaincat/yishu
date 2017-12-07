@@ -18,6 +18,8 @@
 </script>
 <style lang="stylus" type="text/stylus">
   @import "../assets/stylus/variable.styl"
+  body
+    padding-top 0
   .sign
     height 100%
     min-height 750px

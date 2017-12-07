@@ -3,7 +3,9 @@
     <li v-for="(article,index) in articleList" class="note-item">
       <div class="content">
         <div class="author">
-          <a href="" class="avatar" target="_blank"></a>
+          <a href="" class="avatar" target="_blank">
+            <img :src="/avatar/+authorList[index].avatar" alt="">
+          </a>
           <div class="info">
             <router-link :to="{name:'ArticleList',params:{userId:authorList[index]._id}}" target="_blank" class="nickname">{{authorList[index].username}}</router-link>
             <time>{{article.create_time|timeFormat}}</time>
@@ -50,9 +52,6 @@
           display inline-block
           vertical-align middle
           margin 0 5px 0 0
-          border 1px solid #ddd
-          border-radius 50%
-          background #db5462
         .info
           display: inline-block
           vertical-align: middle

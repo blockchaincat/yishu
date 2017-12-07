@@ -9,6 +9,19 @@
       </thead>
       <tbody class="base">
         <tr>
+          <td class="top-line">
+            <div class="avatar">
+              <img :src="'/avatar/'+avatarName" alt="">
+            </div>
+          </td>
+          <td class="top-line">
+            <a v-show="!isUploding" href="" class="btn btn-hollow">
+              <input type="file" @change="uploadAvatar" accept="image/png,image/gif,image/jpeg" class="hide" name="avatar">
+              更改头像
+            </a>
+          </td>
+        </tr>
+        <tr>
           <td class="setting-title">昵称</td>
           <td>
             <input type="text" v-model="nickname" placeholder="请输入昵称">
@@ -41,11 +54,35 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
   export default {
-    props:['userInfo'],
+    props:['userInfo','avatarName'],
     data(){
       return {
-        nickname:this.userInfo.username
+        nickname:this.userInfo.username,
+        isUploding:false,
+        userInfoChild:{}
+      }
+    },
+    methods:{
+      uploadAvatar(e){
+        this.isUploding = true;
+        let avatarFile = e.target.files[0];
+      //  创建form对象
+        let param = new FormData();
+        param.append('avatar',avatarFile);
+        param.append('aaa','0');
+        let config = {
+          headers: {'Content-Type': 'multipart/form-data'}
+        };
+        axios.post('/user/uploadAvatar',param,config).then(response=>{
+            let res = response.data;
+            if(res.status==='0'){
+              this.isUploding = false;
+              localStorage.avatarName = localStorage.userId+'.png'
+              location.reload(true)
+            }
+        })
       }
     }
   }

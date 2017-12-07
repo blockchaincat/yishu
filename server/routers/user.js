@@ -14,6 +14,8 @@ const routers = router
   .post('/toggleFollow',UserController.toggleFollow)
   //  退出登录
   .post('/logout',UserController.logout)
+  //上传头像
+  .post('/uploadAvatar',UserController.uploadAvatar)
   //登录检测
   .get('/checkLogin',UserController.checkLogin)
   //获取用户信息
