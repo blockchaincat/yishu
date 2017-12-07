@@ -1,6 +1,6 @@
-# jianshu
+# 易书
 
-> A Vue.js project
+> 前端使用vue.js框架，后端采用koa2开发的一个前后端分离的博客应用。
 
 ## Build Setup
 
